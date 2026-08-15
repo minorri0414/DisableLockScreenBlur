@@ -19,7 +19,10 @@
 
 ### 三、违约处理 / Breach of Terms
 
-1. 违反上述任一条，本站保留**封禁对应 QQ 账号**的权利。
+1. 违反**除第一条（视频授权）以外**的任何规则，本项目所有人将保留向视频发布站点及用户发出以下处理方式的权利：
+   - **侵权举报**
+   - **提醒**
+   - **DMCA（美国数字千年版权法）下架通知**
 
 ---
 
@@ -36,7 +39,10 @@
 
 ### 3. Breach of Terms
 
-1. Violation of any of the above terms reserves the right for us to **ban the corresponding QQ account**.
+1. Violation of any term **other than Clause 1 (Video Permission)** grants the project owner the right to issue the following actions to the video platform and the user:
+   - **Copyright infringement report**
+   - **Warning / Reminder**
+   - **DMCA takedown notice (Digital Millennium Copyright Act)**
 
 ---
 
