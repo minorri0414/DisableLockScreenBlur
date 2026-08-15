@@ -46,4 +46,4 @@
 
 ---
 
-*同意并遵守以上条款即视为接受本 EULA。 / By agreeing to and complying with the above terms, you accept this EULA.*
+*下载并遵守以上条款即视为接受本 EULA。 / Downloading and complying with the above terms constitutes acceptance of this EULA.*
