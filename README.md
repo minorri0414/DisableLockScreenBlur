@@ -70,6 +70,12 @@ Disable-LockScreen-Blur.cmd status
 - Windows 10 1903+ / Windows 11（含 Insider 版本 / including Insider builds）
 - 管理员权限 / Administrator rights (auto-elevated)
 
+## 制作信息 / Credits
+
+本工具由 **DeepSeek V4-Flash**（deepseek-v4-flash 模型）协助开发制作，经人工验证后发布。
+
+This tool was developed with the assistance of **DeepSeek V4-Flash** (deepseek-v4-flash model) and manually verified before release.
+
 ## License
 
 [MIT](LICENSE)
