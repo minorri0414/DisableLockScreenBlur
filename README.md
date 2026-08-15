@@ -54,6 +54,8 @@ HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\OverrideCo
 
 > ⚠️ 首次运行会弹出 UAC 提权提示，请点击 **"是" / Yes**。
 > ⚠️ A UAC prompt will appear on first run — click **Yes**.
+>
+> 📜 **首次下载请先阅读并同意 [EULA（使用须知）](EULA.md)** / First-time downloaders: please read and agree to the [EULA](EULA.md) first.
 
 ### 方式二：命令行参数 / CLI arguments
 
