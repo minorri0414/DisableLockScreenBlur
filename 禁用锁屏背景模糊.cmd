@@ -5,10 +5,13 @@ title 锁屏背景模糊切换工具
 
 REM ====================================================
 REM  禁用/恢复 Windows 10-11 登录屏幕背景模糊效果
+REM  并可自定义登录/关机界面背景色
 REM  双击运行显示菜单; 也支持命令行参数:
-REM    disable  直接禁用模糊, 恢复清晰背景
-REM    enable   恢复 Windows 默认模糊效果
-REM    status   查看当前状态
+REM    disable       直接禁用模糊, 恢复清晰背景
+REM    enable        恢复 Windows 默认模糊效果
+REM    color         进入背景色选择
+REM    resetcolor    恢复默认背景色
+REM    status        查看当前状态
 REM ====================================================
 
 if /i "%~1"=="-check" (
@@ -25,18 +28,22 @@ if errorlevel 1 (
 
 if /i "%~1"=="disable" goto :do_disable
 if /i "%~1"=="enable" goto :do_enable
+if /i "%~1"=="color" goto :do_color
+if /i "%~1"=="resetcolor" goto :do_resetcolor
 if /i "%~1"=="status" goto :do_status
 
 :menu
 cls
 echo ================================================
-echo      锁屏背景模糊效果切换工具
-echo      适用于 Windows 10 1903+ 和 Windows 11
+echo      锁屏背景模糊切换工具
+echo      适用于 Windows 10 19H1+ 和 Windows 11
 echo ================================================
 echo.
 echo   1. 禁用模糊 - 恢复以前的清晰背景
 echo   2. 恢复模糊 - Windows 默认效果
-echo   3. 查看当前状态
+echo   3. 自定义登录/关机界面背景色
+echo   4. 恢复默认背景色
+echo   5. 查看当前状态
 echo   0. 退出
 echo.
 set "choice="
@@ -49,7 +56,9 @@ if "!choice!"=="" (
 set "_empty=0"
 if "!choice!"=="1" goto :do_disable
 if "!choice!"=="2" goto :do_enable
-if "!choice!"=="3" goto :do_status
+if "!choice!"=="3" goto :do_color
+if "!choice!"=="4" goto :do_resetcolor
+if "!choice!"=="5" goto :do_status
 if "!choice!"=="0" exit /b
 goto :menu
 
@@ -94,9 +103,89 @@ echo.
 echo [完成] 已恢复默认, 登录屏幕将重新使用模糊背景。
 goto :end_pause
 
+:do_color
+cls
+echo ================================================
+echo      选择登录/关机界面背景色
+echo      此颜色同时用于登录界面和关机画面
+echo ================================================
+echo.
+echo   1. 黑色 000000
+echo   2. 深蓝 0066CC - Win10 经典色
+echo   3. 深灰 333333
+echo   4. 深紫 522850
+echo   5. 粉紫 A05094 - MMJ 风格
+echo   6. 自定义 RGB 色值
+echo   0. 返回主菜单
+echo.
+set "choice="
+set /p choice=请输入选项后回车:
+if "!choice!"=="1" set "_bgr=000000"
+if "!choice!"=="2" set "_bgr=cc6600"
+if "!choice!"=="3" set "_bgr=333333"
+if "!choice!"=="4" set "_bgr=502852"
+if "!choice!"=="5" set "_bgr=9450a0"
+if "!choice!"=="6" goto :color_custom
+if "!choice!"=="0" goto :menu
+if not defined _bgr goto :do_color
+call :apply_bgr
+goto :end_pause
+
+:color_custom
+echo.
+set "_rgb="
+set /p _rgb=请输入 6 位十六进制 RGB 色值, 例如 0066CC:
+if "!_rgb!"=="" goto :do_color
+set "_ok="
+echo !_rgb!| findstr /r "^[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]$" >nul
+if not errorlevel 1 set "_ok=1"
+if not "!_ok!"=="1" (
+    echo 输入无效, 请输入 6 位十六进制色值。
+    goto :color_custom
+)
+powershell -NoProfile -Command "$c=0x%_rgb%;$r=$c -band 0xFF;$g=$c -band 0xFF00;$b=$c -band 0xFF0000;$r=$r -shl 16;$b=$b -shr 16;$v=$r -bor $g -bor $b;$h='{0:X6}' -f $v;reg add 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\OverrideColor' /v BackgroundColorInbbggrr /t REG_DWORD /d 0xff$h /f"
+if errorlevel 1 (
+    echo [失败] 背景色设置失败, 请确认已授予管理员权限。
+    goto :end_pause
+)
+echo.
+echo [完成] 背景色已设置为 RGB=!_rgb!
+echo 锁屏 Win+L 或下次关机即可看到效果。
+goto :end_pause
+
+:apply_bgr
+echo.
+echo 正在设置登录/关机界面背景色...
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\OverrideColor" /v BackgroundColorInbbggrr /t REG_DWORD /d 0xff%_bgr% /f
+if errorlevel 1 (
+    echo [失败] 背景色设置失败, 请确认已授予管理员权限。
+    goto :end_pause
+)
+echo.
+echo [完成] 背景色已设置, 锁屏 Win+L 或下次关机即可看到效果。
+goto :end_pause
+
+:do_resetcolor
+echo.
+echo 正在恢复默认背景色...
+reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\OverrideColor" /v BackgroundColorInbbggrr >nul 2>nul
+if errorlevel 1 (
+    echo 当前已是默认背景色, 无需修改。
+    goto :end_pause
+)
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\OverrideColor" /v BackgroundColorInbbggrr /f >nul
+if errorlevel 1 (
+    echo [失败] 恢复失败, 请确认已授予管理员权限。
+    goto :end_pause
+)
+echo.
+echo [完成] 已恢复系统默认背景色。
+goto :end_pause
+
 :do_status
 echo.
 echo 正在读取当前设置...
+echo --- 模糊效果 ---
 set "_found=0"
 for %%V in (DisableAcrylicBackground DisableAcrylicBackgroundOnLogon) do (
     set "_val="
@@ -111,6 +200,16 @@ for %%V in (DisableAcrylicBackground DisableAcrylicBackgroundOnLogon) do (
 )
 if "!_found!"=="0" (
     echo   未设置任何相关策略, 当前为 Windows 默认: 模糊启用
+)
+echo.
+echo --- 界面背景色 ---
+set "_bg="
+for /f "tokens=3" %%a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\OverrideColor" /v BackgroundColorInbbggrr 2^>nul ^| findstr /i "BackgroundColorInbbggrr"') do set "_bg=%%a"
+if defined _bg (
+    echo   BackgroundColorInbbggrr = !_bg!
+    echo   -- 已自定义背景色
+) else (
+    echo   未设置, 使用系统默认颜色
 )
 echo.
 pause
