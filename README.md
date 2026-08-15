@@ -67,8 +67,12 @@ Disable-LockScreen-Blur.cmd status
 
 ## 系统要求 / Requirements
 
-- Windows 10 1903+ / Windows 11（含 Insider 版本 / including Insider builds）
+- **Windows 10 1903+**：内核版本号需为 `17713.1000.rs_prerelease.180706-1641` 之后的版本
+- **Windows 11**：内核版本号需高于 `10.0.19483.1000.rs_wdatp.190913-1542`
 - 管理员权限 / Administrator rights (auto-elevated)
+
+> **Windows 10 1903+** requires a kernel build newer than `17713.1000.rs_prerelease.180706-1641`
+> **Windows 11** requires a kernel build higher than `10.0.19483.1000.rs_wdatp.190913-1542`
 
 ## 制作信息 / Credits
 
