@@ -89,6 +89,12 @@ Disable-LockScreen-Blur.cmd status
 
 ## 制作信息 / Credits
 
+| 角色 / Role | 提供方 / Provider |
+|---|---|
+| 🤖 模型 API | **DeepSeek（深度求索）** |
+| 🧩 Agent | **Hermes** |
+| 👤 核心开发 | **minorri（爱丽）** |
+
 本工具由 **DeepSeek V4-Flash**（deepseek-v4-flash 模型）协助开发制作，经人工验证后发布。
 
 This tool was developed with the assistance of **DeepSeek V4-Flash** (deepseek-v4-flash model) and manually verified before release.
@@ -97,4 +103,4 @@ This tool was developed with the assistance of **DeepSeek V4-Flash** (deepseek-v
 
 [MIT](LICENSE)
 
-Copyright (c) 2026 AngesDitgialIO
+Copyright (c) 2026 minorri0414
